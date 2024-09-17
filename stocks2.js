@@ -5,6 +5,9 @@ const top_data = document.querySelector('.top_data');
 const canvas = document.querySelector('canvas');
 const loading_screen = document.querySelector('.loading_screen');
 
+const favorite = document.querySelector('.favorite');
+const favorite_holder = document.querySelector('.following');
+
 const selected_icon = document.querySelector('.selected_icon');
 const selected_name = document.querySelector('.selected_name');
 const selected_ticker = document.querySelector('.selected_ticker');
@@ -14,6 +17,9 @@ const selected_value = document.querySelector('.selected_value');
 let search_list;
 let time;
 let timerInterval;
+
+let favorite_list = [];
+let selected_stock;
 
 async function fetchData(datasheet) {
     let url = 'source/' + datasheet;
@@ -94,6 +100,13 @@ async function getStockData(ticker, name) {
         return false;
     }
 
+    selected_stock = {ticker: ticker, company: name};
+    if (searchFavorites(selected_stock)) {
+        favorite.classList.add('on');
+    } else {
+        favorite.classList.remove('on');
+    }
+
     try {
         const response = await fetch(url); // Wait for the fetch to complete
         if (!response.ok) {
@@ -139,7 +152,11 @@ function loadStockStats(ticker, name, results) {
     let end = results[results.length - 1].o;  // Ending value
     let calculated_change = (((end - start) / start) * -100).toFixed(2);
 
-    selected_icon.src = `https://assets.parqet.com/logos/symbol/${ticker}?format=png`;
+    if (!manual_icon.includes(ticker)) {
+        selected_icon.src = `https://assets.parqet.com/logos/symbol/${ticker}?format=png`;
+    } else {
+        selected_icon.src = `icon/${ticker}.png`;
+    }
     selected_name.textContent = name;
     selected_ticker.textContent = ticker;
     selected_change.textContent = calculated_change + '%';
@@ -195,6 +212,56 @@ function createCanvasGraph(results, highest, lowest) {
     ctx.stroke();
 }
 
+function addFavoriteStock() {
+    if (searchFavorites(selected_stock)) {
+        removeFavoriteStock();
+        return false;
+    }
+    if (!selected_stock) { return false };
+    favoriteStockFrame(selected_stock);
+    favorite_list.push(selected_stock);
+    favorite.classList.add('on');
+}
+
+function favoriteStockFrame(stock) {
+    let favorite_clone = placeholder.cloneNode(true);
+    let logo = favorite_clone.querySelector('.stock_logo');
+    let name = favorite_clone.querySelector('.company_name');
+    if (!manual_icon.includes(stock.ticker)) {
+        logo.src = `https://assets.parqet.com/logos/symbol/${stock.ticker}?format=png`;
+    } else {
+        logo.src = `icon/${stock.ticker}.png`;
+    }
+    name.textContent = stock.company;
+    favorite_clone.classList.remove('placeholder');
+    favorite_clone.setAttribute('name', stock.company);
+    favorite_clone.setAttribute('stock', stock.ticker);
+    favorite_clone.onclick = stockButtonClick;
+    favorite_holder.classList.remove('hide');
+    favorite_holder.appendChild(favorite_clone);
+}
+
+function removeFavoriteStock() {
+    let found_index = searchFavorites(selected_stock);
+    let found_frame = favorite_holder.querySelector(`[stock="${selected_stock.ticker}"]`);
+    favorite_list.splice(found_index, 1);
+    found_frame.remove();
+
+    if (favorite_list.length < 1) {
+        favorite_holder.classList.add('hide');
+    }
+    favorite.classList.remove('on');
+}
+
+function searchFavorites(find) {
+    for (var i = 0; i < favorite_list.length; i++) {
+        let this_entry = favorite_list[i];
+        if (this_entry.ticker != find.ticker) { continue };
+        if (this_entry.company != find.company) { continue };
+        return i;
+    }
+}
+
 async function load() {
     time = localStorage.getItem('timeout');
     resetTimer();
@@ -213,3 +280,4 @@ function beforeUnload() {
 
 load();
 document.addEventListener('beforeunload', beforeUnload);
+favorite.addEventListener('mouseup', addFavoriteStock)
