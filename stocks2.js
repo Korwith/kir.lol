@@ -86,7 +86,7 @@ function resetTimer() {
 }
 async function getStockData(ticker, name) {
     const apiKey = 'QBDnJz7aP7o7Q1w4nSyT57MXMtqmeFAC'; // Store your API key
-    const date = '2024-09-13';  // Change this to the previous day's date
+    const date = '2024-09-17';  // Change this to the previous day's date
     const url = `https://api.polygon.io/v2/aggs/ticker/${ticker}/range/1/minute/${date}/${date}?apiKey=${apiKey}`;
 
     if (time < 12) {
@@ -101,7 +101,7 @@ async function getStockData(ticker, name) {
     }
 
     selected_stock = {ticker: ticker, company: name};
-    if (searchFavorites(selected_stock)) {
+    if (searchFavorites(selected_stock) != null) {
         favorite.classList.add('on');
     } else {
         favorite.classList.remove('on');
@@ -213,7 +213,7 @@ function createCanvasGraph(results, highest, lowest) {
 }
 
 function addFavoriteStock() {
-    if (searchFavorites(selected_stock)) {
+    if (searchFavorites(selected_stock) != null) {
         removeFavoriteStock();
         return false;
     }

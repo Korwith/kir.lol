@@ -419,17 +419,31 @@ nav.sidebar::after {
     }
 
     .top_data {
-        flex-direction: column;
+        flex-wrap: wrap;
+        height: fit-content;
     }
 
     .selected_info {
         margin: 0;
         margin-left: auto;
         margin-right: auto;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .selected_icon {
+        margin: 0;
+        height: 80px;
     }
 
     .stock_numbers {
+        margin: 0;
         margin-left: auto;
         margin-right: auto;
+        width: 325px;
+    }
+
+    .selected_name {
+        flex: unset;
     }
 }
