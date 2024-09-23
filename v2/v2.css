@@ -157,6 +157,7 @@ nav.sidebar {
     width: 100%;
     height: 72px;
     border-bottom: 1px solid #252525;
+    user-select: none;
 }
 
 .horizontal {
@@ -216,5 +217,6 @@ canvas {
 
     .most_active {
         width: 100%;
+        display: none;
     }
 }
