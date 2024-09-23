@@ -209,10 +209,6 @@ canvas {
         transform: translate(100%);
     }
 
-    .horizontal {
-        overflow-y: auto;
-    }
-
     .overview {
         width: 100%;
     }
