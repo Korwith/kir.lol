@@ -124,6 +124,7 @@ nav.sidebar {
     position: fixed;
     right: 0;
     bottom: 0;
+    user-select: none;
     transition: transform 0.2s;
 }
 
