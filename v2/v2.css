@@ -192,6 +192,9 @@ canvas {
 @media screen and (max-width: 767px) {
     nav.sidebar {
         width: 100%;
+        height: calc(100dvh - 55px);
+        top: 55px;
+        position: fixed;
         transform: translateX(-100%);
     }
 
