@@ -201,6 +201,9 @@ canvas {
 
     .content {
         width: 100vw;
+        height: calc(100dvh - 55px);
+        position: fixed;
+        top: 55px;
     }
 
     .content.hide {
