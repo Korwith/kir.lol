@@ -1,73 +1,59 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="stocks.css">
-        <title>kir.lol</title>
+        <title>Stock Tracker</title>
+        <link rel="stylesheet" href="v2.css">
+        <link rel="stylesheet" href="css/widget.css">
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="author" content="kircic">
-        <meta name="description" content="Tracker for the stock market.">
-        <meta property="og:title" content="kir.lol">
-        <meta property="og:type" content="website">
-        <meta property="og:url" content="https://www.kir.lol">
-        <meta property="og:image" content="https://www.kircic.org/icon/Entire-Network.psd">
-        <meta property="og:description" content="Collection of all of my personal projects and ideas.">
-        <meta name="theme-color" content="#000001">
-        <link rel="icon" type="image/x-icon" href="https://www.kircic.org/icon/favicon.ico">    
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+        <meta name="theme-color" content="#151515">
     </head>
 
     <body>
+        <div class="background"></div>
+
         <header>
             <div class="header_left">
-                <div class="logo"></div>
-                <div class="search" contenteditable></div>
+                <div class="icon logo"></div>
+                <span class="title">Stockwatch</span>
             </div>
         </header>
 
         <nav class="sidebar">
-            <div class="following hide">
-                <span class="header">Following</span>
-            </div>
-
-            <div class="my_stocks">
-                <span class="header">Featured</span>
-            </div>
-            <div class="alphabetical">
-                <span class="header">Alphabetical</span>
+            <div class="page_list">
+                <div class="page_button home">
+                    <div class="icon home"></div>
+                    <span>Home</span>
+                </div>
+                <div class="page_button news" news>
+                    <div class="icon news"></div>
+                    <span>News</span>
+                </div>
+                <div class="page_button tracker">
+                    <div class="icon tracker"></div>
+                    <span>Tracker</span>
+                </div>
             </div>
         </nav>
 
         <div class="content">
-            <div class="top_data">
-                <div class="selected_info">
-                    <img class="selected_icon"></img>
-                    <span class="selected_name">--</span>
-                    <span class="selected_ticker">--</span>
+            <div class="page home show">
+                <div class="banner"></div>
+                <div class="horizontal">
+                    <div class="overview show"></div>
+                    <div class="most_active"></div>    
                 </div>
-
-                <div class="stock_numbers">
-                    <button class="favorite"></button>
-                    <span class="selected_change"></span>
-                    <span class="selected_value">$69.04</span>
+                <div class="tab_select">
+                    <button class="active" open="overview">Overview</button>
+                    <button open="most_active">Most Active</button>
                 </div>
             </div>
 
-            <div class="loading_screen hide">
-                <div class="circle"></div>
-                <div class="bar">Fetching Data...</div>
-            </div>
-            <canvas id="graph" width="1000" height="750"></canvas>
+            <div class="page news"></div>
+            <div class="page tracker"></div>
         </div>
 
-        <div class="listing placeholder">
-            <div class="listing_left">
-                <img class="stock_logo"></img>
-                <span class="company_name"></span>
-            </div>
-            <span class="stock_ticker"></span>
-        </div>
-
-        <!-- <script src="stocks.js"></script> -->
-        <script src="stocks2.js"></script>
+        <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+        <script type="text/javascript" src="view.js"></script>
     </body>
 </html>
