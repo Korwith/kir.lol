@@ -114,7 +114,7 @@ nav.sidebar {
     margin-right: 10px;
     height: 50px;
     display: flex;
-    gap: 5px;
+    gap: 1px;
     cursor: pointer;
     border-radius: 8px;
     transition: background-color 0.2s;
@@ -126,8 +126,8 @@ nav.sidebar {
 
 .stock_icon {
     aspect-ratio: 1/1;
-    height: calc(100% - 10px);
-    margin: 5px;
+    height: calc(100% - 16px);
+    margin: 8px;
     flex: 0 0 auto;
     border-radius: 50%;
 }
