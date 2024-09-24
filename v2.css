@@ -91,6 +91,7 @@ nav.sidebar {
     gap: 10px;
     border-radius: 8px;
     background-color: rgba(0, 0, 0, 0.1);
+    user-select: none;
     transition: background-color 0.2s;
 }
 
