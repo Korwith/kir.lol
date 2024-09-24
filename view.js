@@ -131,7 +131,7 @@ function loadTrackerWidget() {
         "autosize": true,
         "symbol": "NASDAQ:AAPL",
         "timezone": "Etc/UTC",
-        "theme": "dark",
+        "theme": "light",
         "style": "3",
         "locale": "en",
         "toolbar_bg": "#f1f3f6",
@@ -147,7 +147,6 @@ function loadTrackerWidget() {
         "popup_width": "1000",
         "popup_height": "650",
         "container_id": "tradingview_1dcca",
-        "custom_css_url": "./css/widget.css" // Ensure this is correct
     });
 
     let widget_dom = document.querySelector('#' + widget.id);
