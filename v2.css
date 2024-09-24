@@ -224,6 +224,10 @@ nav.sidebar {
     display: block;
 }
 
+.page.crypto {
+    pointer-events: none;
+}
+
 .page h1 {
     text-align: center;
 }
