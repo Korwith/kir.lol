@@ -117,9 +117,7 @@ nav.sidebar {
 
 .search {
     display: block;
-    position: absolute;
     margin: 10px;
-    bottom: 0;
     width: calc(100% - 42px);
     height: 30px;
     border: 0;
