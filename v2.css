@@ -8,6 +8,10 @@ iframe {
     border: 0;
 }
 
+.placeholder {
+    display: none !important;
+}
+
 .background {
     width: 100vw;
     height: 100vh;
@@ -66,7 +70,15 @@ nav.sidebar {
 
 .page_list {
     width: 100%;
-    height: fit-content;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.button_holder {
+    flex: 0 0 auto;
+    width: 100%;
 }
 
 .page_button {
@@ -86,6 +98,72 @@ nav.sidebar {
     background-color: rgba(255, 255, 255, 0.025);
 }
 
+.stock_holder {
+    width: 100%;
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.stock {
+    width: calc(100% - 20px);
+    margin-left: 10px;
+    margin-right: 10px;
+    height: 50px;
+    display: flex;
+    gap: 5px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+.stock:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.stock_icon {
+    aspect-ratio: 1/1;
+    height: calc(100% - 10px);
+    margin: 5px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+}
+
+.stock_info {
+    flex: 1;
+    overflow-x: hidden;
+    display: flex;
+    position: relative;
+    user-select: none;
+}
+
+.stock_info span {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+}
+
+.stock_info span.stock_name {
+    white-space: nowrap;
+    flex: 1;
+    max-width: 80%;
+    overflow-x: hidden;
+    font-size: 1.1rem;
+}
+
+.stock_info span.stock_ticker {
+    flex: 0 0 auto;
+    color: rgba(255, 255, 255, 0.8);
+    width: fit-content;
+    height: 100%;
+    padding-left: 6px;
+    padding-right: 6px;
+    font-size: 1.2rem;
+}
+
 .page_button .icon {
     aspect-ratio: 1/1;
     height: 100%;
@@ -96,13 +174,18 @@ nav.sidebar {
 }
 
 .icon.home {
-    background-size: 65%;
+    background-size: 62%;
     background-image: url(icon/home.svg);
 }
 
 .icon.news {
     background-size: 70%;
     background-image: url(icon/news.svg);
+}
+
+.icon.crypto {
+    background-size: 88%;
+    background-image: url(icon/bitcoin.svg);
 }
 
 .icon.tracker {
