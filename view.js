@@ -8,8 +8,14 @@ const sidebar = document.querySelector('nav.sidebar');
 const content = document.querySelector('.content');
 const tab_select = document.querySelector('.tab_select');
 
+const search = sidebar.querySelector('.search');
 const sidebar_list = sidebar.querySelector('.stock_holder');
+const search_pane = sidebar.querySelector('.search_pane');
 const stock_placeholder = document.querySelector('.placeholder');
+const info_holder = document.querySelector('.info_holder');
+const info_iframe = info_holder.querySelector('iframe');
+
+let search_data;
 
 const iframe_link = {
     'home': {
@@ -68,6 +74,36 @@ function sidebarButton() {
     }
 }
 
+async function fetchSearchData() {
+    let url = 'source/stock_info.csv';
+    try {
+        let response = await fetch(url)
+        if (!response.ok) {
+            throw new Error(response.status);
+        }
+        let text = await response.text();
+        parseSearchData(text);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+function parseSearchData(text) {
+    let lines = text.split('\n');
+    let formatted = [];
+    for (var i = 1; i < lines.length; i++) {
+        let this_row = lines[i];
+        let split = this_row.split(',');
+        let obj = {
+            ticker: split[0],
+            name: split[1],
+            exchange: split[2]
+        }
+        formatted.push(obj);
+    }
+    search_data = formatted;
+}
+
 async function fetchSidebarData() {
     let url = 'source/featured.csv';
     try {
@@ -92,12 +128,92 @@ function loadSidebarData(text) {
         let clone_name = clone.querySelector('.stock_name');
         let clone_ticker = clone.querySelector('.stock_ticker');
 
+        clone.setAttribute('tick', split[0]);
+        clone.setAttribute('name', split[1]);
         clone_icon.src = `https://assets.parqet.com/logos/symbol/${split[0]}?format=png`
         clone_ticker.textContent = split[0];
         clone_name.textContent = split[1];
         clone.classList.remove('placeholder');
         sidebar_list.appendChild(clone);
     }
+}
+
+// handle sidebar search
+function handleSearch() {
+    if (search.value.length == 0) {
+        sidebar_list.classList.remove('searching');
+        return;
+    } 
+    if (search_data.length == 0) { return };
+
+    sidebar_list.classList.add('searching');
+    let match = [];
+    for (var i = 0; i < search_data.length; i++) {
+        let this_entry = search_data[i];
+        let lowercase_tick = this_entry.ticker.toLowerCase();
+        let lowercase_name = this_entry.name.toLowerCase();
+        let lowercase_value = search.value.toLowerCase();
+
+        if (this_entry.ticker.includes('.') || this_entry.ticker.includes('-')) { continue };
+        if (lowercase_tick.includes(lowercase_value) || lowercase_name.includes(lowercase_value)) {
+            match.push(this_entry);
+        }
+    }
+    generateEntries(match);
+}
+
+function generateEntries(match) {
+    clearEntries();
+    for (var i = 0; i < 15; i++) {
+        let this_entry = match[i];
+        let this_clone = stock_placeholder.cloneNode(true);
+        let this_logo = this_clone.querySelector('.stock_icon');
+        let this_name = this_clone.querySelector('.stock_name');
+        let this_ticker = this_clone.querySelector('.stock_ticker');
+
+        this_logo.remove();
+        this_name.textContent = this_entry.name;
+        this_ticker.textContent = this_entry.ticker;
+        this_clone.setAttribute('tick', this_entry.ticker);
+        this_clone.setAttribute('name', this_entry.name);
+        this_clone.classList.remove('placeholder');
+        search_pane.appendChild(this_clone);
+    }
+}
+
+function clearEntries() {
+    let all_entry = search_pane.querySelectorAll('.stock');
+    for (var i = 0; i < all_entry.length; i++) {
+        let this_entry = all_entry[i];
+        this_entry.remove();
+    }
+}
+
+// THIS IS DISABLED
+let hovered
+function sidebarHover(event) {
+    if (!event.target.classList.contains('stock')) { 
+        hideInfoHolder();
+        return false 
+    };
+    let ticker = event.target.getAttribute('tick');
+    if (!ticker) { return };
+    if (ticker == hovered) { return };
+    hovered = ticker;
+
+    info_holder.classList.add('show');
+    let target_rect = event.target.getBoundingClientRect();
+    let center_y = target_rect.top + (target_rect.height/2);
+    
+    info_holder.style.left = target_rect.right + 15 + 'px';
+    info_holder.style.top = center_y + 'px';
+    info_iframe.removeAttribute('src');
+    info_iframe.src = `https://www.tradingview-widget.com/embed-widget/single-quote/?locale=en#%7B%22symbol%22%3A%22FX%3A${ticker}%22%2C%22width%22%3A%22100%25%22%2C%22isTransparent%22%3Atrue%2C%22colorTheme%22%3A%22dark%22%2C%22height%22%3A126%2C%22utm_source%22%3A%22www.tradingview.com%22%2C%22utm_medium%22%3A%22widget_new%22%2C%22utm_campaign%22%3A%22single-quote%22%2C%22page-uri%22%3A%22www.tradingview.com%2Fwidget-wizard%2Fen%2Flight%2Fsingle-ticker%2F%22%7D`
+}
+
+function hideInfoHolder() {
+    hovered = null;
+    info_holder.classList.remove('show');
 }
 
 // handle widget gen
@@ -180,4 +296,9 @@ handlePageButton();
 loadTrackerWidget();
 handleTabSelect();
 fetchSidebarData();
+fetchSearchData();
 logo_button.onclick = sidebarButton;
+search.addEventListener('input', handleSearch);
+// DISABLED THIS
+// sidebar_list.addEventListener('mousemove', sidebarHover);
+// sidebar_list.addEventListener('mouseleave', hideInfoHolder);
