@@ -317,7 +317,7 @@ nav.sidebar {
 }
 
 .page.tracker {
-    filter: invert(0.93) hue-rotate(180deg);
+    filter: invert(0.94) brightness(1.1) hue-rotate(180deg);
 }
 
 .page.show {

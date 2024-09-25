@@ -51,9 +51,40 @@ function showPage(page_class) {
     }
 }
 
+function handleHistoryState(page) {
+    if (window.location.href.includes('#')) {
+        window.history.pushState(null, null, window.location.href.split('#')[0]);
+    }
+    window.history.pushState(null, null, window.location.href + '#' + page);
+}
+
+function readHistoryState() {
+    let read_href = window.location.href
+    if (read_href.includes('$')) {
+        let split = window.location.href.split('$')[1];
+        let vars = split.split(':');
+        showPage('tracker');
+        loadTrackerWidget(vars[0], vars[1]);
+        return;
+    } else {
+        loadTrackerWidget('NASDAQ', 'AAPL');
+    }
+
+    if (read_href.includes('#')) {
+        let to_open = read_href.split('#')[1];
+        let valid = document.querySelector('.page.' + to_open);
+        if (!valid) { 
+            window.history.pushState(null, null, read_href.split('#')[0]);
+            return;
+        }
+        showPage(to_open);
+    }
+}
+
 function pageButtonClick(event) {
     let last_class = Array.from(event.target.classList).pop();
     showPage(last_class);
+    handleHistoryState(last_class);
 }
 
 function handlePageButton() {
@@ -219,6 +250,7 @@ function hideInfoHolder() {
 // handle widget gen
 function loadPageContent(page) {
     let page_widget = iframe_link[page];
+    if (!page_widget) { return };
     let page_element = document.querySelector('.page.' + page);
     if (page_widget.full) {
         loadWidget(page_element, page_widget.full);
@@ -263,10 +295,10 @@ function handleTabSelect() {
 }
 
 // Handle tacker page
-function loadTrackerWidget() {
+function loadTrackerWidget(exchange, ticker) {
     let widget = new TradingView.widget({
         "autosize": true,
-        "symbol": "NASDAQ:AAPL",
+        "symbol": `${exchange}:${ticker}`,
         "timezone": "Etc/UTC",
         "theme": "light",
         "style": "3",
@@ -293,10 +325,10 @@ function loadTrackerWidget() {
 
 loadPageContent('home');
 handlePageButton();
-loadTrackerWidget();
 handleTabSelect();
 fetchSidebarData();
 fetchSearchData();
+readHistoryState();
 logo_button.onclick = sidebarButton;
 search.addEventListener('input', handleSearch);
 // DISABLED THIS
