@@ -32,7 +32,7 @@ const iframe_link = {
 }
 
 // Handle pages
-function showPage(page_class) {
+function showPage(page_class, first) {
     let active_page = document.querySelector('.page.show');
     if (active_page) {
         active_page.classList.remove('show')
@@ -46,7 +46,7 @@ function showPage(page_class) {
         loadPageContent(page_class);
     }
 
-    if (window.innerWidth < 767) {
+    if (!first && window.innerWidth < 767) {
         sidebarButton();
     }
 }
@@ -63,7 +63,7 @@ function readHistoryState() {
     if (read_href.includes('$')) {
         let split = window.location.href.split('$')[1];
         let vars = split.split(':');
-        showPage('tracker');
+        showPage('tracker', true);
         loadTrackerWidget(vars[0], vars[1]);
         return;
     } else {
@@ -77,7 +77,7 @@ function readHistoryState() {
             window.history.pushState(null, null, read_href.split('#')[0]);
             return;
         }
-        showPage(to_open);
+        showPage(to_open, true);
     }
 }
 
