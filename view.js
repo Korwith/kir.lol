@@ -51,11 +51,14 @@ function showPage(page_class, first) {
     }
 }
 
-function handleHistoryState(page) {
+function handleHistoryState(page, exchange, ticker) {
     if (window.location.href.includes('#')) {
         window.history.pushState(null, null, window.location.href.split('#')[0]);
     }
     window.history.pushState(null, null, window.location.href + '#' + page);
+    if (exchange && ticker) {
+        window.history.pushState(null, null, window.location.href + '$' + exchange + ':' + ticker);
+    }
 }
 
 function readHistoryState() {
@@ -161,10 +164,12 @@ function loadSidebarData(text) {
 
         clone.setAttribute('tick', split[0]);
         clone.setAttribute('name', split[1]);
+        clone.setAttribute('exchange', split[2]);
         clone_icon.src = `https://assets.parqet.com/logos/symbol/${split[0]}?format=png`
         clone_ticker.textContent = split[0];
         clone_name.textContent = split[1];
         clone.classList.remove('placeholder');
+        clone.onclick = stockButtonClick;
         sidebar_list.appendChild(clone);
     }
 }
@@ -207,7 +212,9 @@ function generateEntries(match) {
         this_ticker.textContent = this_entry.ticker;
         this_clone.setAttribute('tick', this_entry.ticker);
         this_clone.setAttribute('name', this_entry.name);
+        this_clone.setAttribute('exchange', this_entry.exchange)
         this_clone.classList.remove('placeholder');
+        this_clone.onclick = stockButtonClick;
         search_pane.appendChild(this_clone);
     }
 }
@@ -321,6 +328,19 @@ function loadTrackerWidget(exchange, ticker) {
     let widget_dom = document.querySelector('#' + widget.id);
     let widget_parent = widget_dom.parentElement;
     tracker_page.appendChild(widget_parent);
+}
+
+function stockButtonClick(event) {
+    let ticker = event.target.getAttribute('tick');
+    let exchange = event.target.getAttribute('exchange');
+    if (!ticker || !exchange) { return };
+    handleHistoryState('tracker', exchange, ticker);
+    //loadTrackerWidget(exchange, ticker);
+
+    if (window.innerWidth < 767) {
+        sidebarButton();
+    }
+    window.location.reload();
 }
 
 loadPageContent('home');
