@@ -79,13 +79,17 @@ nav.sidebar {
 
 .button_holder {
     flex: 0 0 auto;
-    width: 100%;
+    width: calc(100% - 20px);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .page_button {
-    width: calc(100% - 20px);
-    margin: 10px;
-    margin-bottom: 0;
+    width: calc(50% - 5px);
     height: 45px;
     cursor: pointer;
     display: flex;
