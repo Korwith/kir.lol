@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>3D Viewer</title>
+        <link rel="stylesheet" href="view.css">
+    </head>
+
+    <body>
+        <div class="background"></div>
+        <header>
+
+        </header>
+
+        <nav class="sidebar">
+
+        </nav>
+
+        <div class="content">
+
+        </div>
+
+        <script type="importmap">
+            {
+                "imports": {
+                    "three": "./node_modules/three/build/three.module.js",
+                    "OrbitControls": "./node_modules/three/examples/jsm/controls/OrbitControls.js",
+                    "OBJLoader": "./node_modules/three/examples/jsm/loaders/OBJLoader.js",
+                    "MTLLoader": "./node_modules/three/examples/jsm/loaders/MTLLoader.js",
+                    "GLTFLoader": "./node_modules/three/examples/jsm/loaders/GLTFLoader.js",
+                    "FBXLoader": "./node_modules/three/examples/jsm/loaders/FBXLoader.js",
+                    "Stats": "./node_modules/three/examples/jsm/libs/stats.module.js"
+                }
+            }
+        </script>
+        <script src="view.js" type="module"></script>
+    </body>
+</html>
