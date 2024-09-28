@@ -209,6 +209,7 @@ nav.sidebar {
     margin: 5px;
     flex: 0 0 auto;
     border-radius: 50%;
+    user-select: none;
 }
 
 .stock_info {
