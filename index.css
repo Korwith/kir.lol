@@ -129,6 +129,14 @@ nav.sidebar {
     flex-direction: column;
 }
 
+.frame_list {
+    width: 100%;
+    height: fit-content;
+    border-bottom: 1px solid #252525;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+
 .search_header {
     display: flex;
     height: 25px;
@@ -204,12 +212,17 @@ nav.sidebar {
 }
 
 .stock_icon {
+    position: relative;
     aspect-ratio: 1/1;
     height: calc(100% - 10px);
     margin: 5px;
     flex: 0 0 auto;
     border-radius: 50%;
     user-select: none;
+}
+
+.stock_icon.loadfail {
+    background: linear-gradient(to bottom right, lime, darkgreen)
 }
 
 .stock_info {

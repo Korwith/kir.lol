@@ -139,21 +139,26 @@ function parseSearchData(text) {
 }
 
 async function fetchSidebarData() {
-    let url = 'source/featured.csv';
-    try {
-        let response = await fetch(url)
-        if (!response.ok) {
-            throw new Error(response.status);
+    let url = ['source/etf.csv', 'source/featured.csv'];
+    for (var i = 0; i < url.length; i++) {
+        let entry = url[i];
+        try {
+            let response = await fetch(entry)
+            if (!response.ok) {
+                throw new Error(response.status);
+            }
+            let text = await response.text();
+            loadSidebarData(entry, text);
+        } catch (error) {
+            console.error(error);
         }
-        let text = await response.text();
-        loadSidebarData(text);
-    } catch (error) {
-        console.error(error);
     }
 }
 
-function loadSidebarData(text) {
+function loadSidebarData(entry, text) {
+    let found_parent = sidebar_list.querySelector(`.frame_list[source="${entry}"]`);
     let lines = text.split('\n');
+
     for (var i = 1; i < lines.length; i++) {
         let this_row = lines[i];
         let split = this_row.split(',');
@@ -162,15 +167,26 @@ function loadSidebarData(text) {
         let clone_name = clone.querySelector('.stock_name');
         let clone_ticker = clone.querySelector('.stock_ticker');
 
+        let test_icon = new Image();
+        test_icon.onload = function() {
+            clone_icon.src = `https://assets.parqet.com/logos/symbol/${split[0]}?format=png`;
+            test_icon.remove();
+        }
+        test_icon.onerror = function() {
+            clone_icon.classList.add('loadfail');
+            clone_icon.src = 'icon/money.svg';
+            test_icon.remove();
+        }
+        test_icon.src = `https://assets.parqet.com/logos/symbol/${split[0]}?format=png`;
+
         clone.setAttribute('tick', split[0]);
         clone.setAttribute('name', split[1]);
         clone.setAttribute('exchange', split[2]);
-        clone_icon.src = `https://assets.parqet.com/logos/symbol/${split[0]}?format=png`
         clone_ticker.textContent = split[0];
         clone_name.textContent = split[1];
         clone.classList.remove('placeholder');
         clone.onclick = stockButtonClick;
-        sidebar_list.appendChild(clone);
+        found_parent.appendChild(clone);
     }
 }
 
