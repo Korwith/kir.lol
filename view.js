@@ -35,10 +35,13 @@ const preset_image = {
     'BTCUSD': 'icon/bitcoin_color.svg',
     'ETHUSD': 'icon/etherium_color.svg',
     'XRPUSD': 'icon/xrp_color.svg',
-    'SOLUSD': 'icon/solana_color.svg',
+    'SOLUSD': 'icon/solana_color.png',
     'ADAUSD': 'icon/cardano_color.svg',
     'TRXUSD': 'icon/tron_color.svg',
     'LTCUSD': 'icon/litecoin_color.svg',
+    'POLUSD': 'icon/polygon_color.svg',
+    'XMRUSD': 'icon/monero_color.svg',
+    'ATOMUSD': 'icon/cosmos_color.svg',
     'DOGEUSD': 'icon/doge_color.svg',
 }
 
