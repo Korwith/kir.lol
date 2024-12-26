@@ -31,6 +31,17 @@ const iframe_link = {
     }
 }
 
+const preset_image = {
+    'BTCUSD': 'icon/bitcoin_color.svg',
+    'ETHUSD': 'icon/etherium_color.svg',
+    'XRPUSD': 'icon/xrp_color.svg',
+    'SOLUSD': 'icon/solana_color.svg',
+    'ADAUSD': 'icon/cardano_color.svg',
+    'TRXUSD': 'icon/tron_color.svg',
+    'LTCUSD': 'icon/litecoin_color.svg',
+    'DOGEUSD': 'icon/doge_color.svg',
+}
+
 // Handle pages
 function showPage(page_class, first) {
     let active_page = document.querySelector('.page.show');
@@ -139,7 +150,7 @@ function parseSearchData(text) {
 }
 
 async function fetchSidebarData() {
-    let url = ['source/etf.csv', 'source/featured.csv'];
+    let url = ['source/etf.csv', 'source/featured.csv', 'source/crypto.csv'];
     for (var i = 0; i < url.length; i++) {
         let entry = url[i];
         try {
@@ -167,6 +178,21 @@ function loadSidebarData(entry, text) {
         let clone_name = clone.querySelector('.stock_name');
         let clone_ticker = clone.querySelector('.stock_ticker');
 
+        clone.setAttribute('tick', split[0]);
+        clone.setAttribute('name', split[1]);
+        clone.setAttribute('exchange', split[2]);
+        clone_ticker.textContent = split[0];
+        clone_name.textContent = split[1];
+        clone.classList.remove('placeholder');
+        clone.onclick = stockButtonClick;
+        found_parent.appendChild(clone);
+
+        let found_preset = preset_image[split[0]];
+        if (found_preset) {
+            clone_icon.src = found_preset;
+            continue;
+        }
+
         let test_icon = new Image();
         test_icon.onload = function() {
             clone_icon.src = `https://assets.parqet.com/logos/symbol/${split[0]}?format=png`;
@@ -178,15 +204,6 @@ function loadSidebarData(entry, text) {
             test_icon.remove();
         }
         test_icon.src = `https://assets.parqet.com/logos/symbol/${split[0]}?format=png`;
-
-        clone.setAttribute('tick', split[0]);
-        clone.setAttribute('name', split[1]);
-        clone.setAttribute('exchange', split[2]);
-        clone_ticker.textContent = split[0];
-        clone_name.textContent = split[1];
-        clone.classList.remove('placeholder');
-        clone.onclick = stockButtonClick;
-        found_parent.appendChild(clone);
     }
 }
 

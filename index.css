@@ -132,7 +132,6 @@ nav.sidebar {
 .frame_list {
     width: 100%;
     height: fit-content;
-    border-bottom: 1px solid #252525;
     padding-bottom: 5px;
     margin-bottom: 5px;
 }
